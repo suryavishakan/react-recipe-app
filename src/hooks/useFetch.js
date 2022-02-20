@@ -1,48 +1,53 @@
 import { useState, useEffect } from "react";
 
-export const useFetch = (url) => {
-  // state for data change
+export const useFetch = (url, method = "GET") => {
   const [data, setData] = useState(null);
-
-  //   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // useEffect hook to manage infinite fetch requests
+  const [options, setOptions] = useState(null);
+
+  const postData = (postData) => {
+    setOptions({
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(postData),
+    });
+  };
+
   useEffect(() => {
     const controller = new AbortController();
-
-    // async function to fetch the data
-    const fetchData = async () => {
-      //   setIsLoading(true);
+    const fetchData = async (fetchOptions) => {
       try {
-        const res = await fetch(url, { signal: controller.signal });
+        const res = await fetch(url, {
+          ...fetchOptions,
+          signal: controller.signal,
+        });
         if (!res.ok) {
           throw new Error(res.statusText);
         }
         const json = await res.json();
-        //   setIsLoading(false);
         setData(json);
         setError(null);
       } catch (err) {
         if (err.name === "AbortError") {
           console.log("the fetch was aborted");
         } else {
-          //   setIsLoading(false);
           setError("Could not fetch the data");
           console.log(err.message);
         }
       }
     };
-
-    // call/invoke the function
-    fetchData();
-
-    // cleanup function
+    if (method === "GET") {
+      fetchData();
+    }
+    if (method === "POST" && options) {
+      fetchData(options);
+    }
     return () => {
       controller.abort();
     };
-  }, [url]);
-
-  // return the data and the error, which is to be passed to the App.js
-  return { data, error };
+  }, [url, method, options]);
+  return { data, error, postData };
 };
