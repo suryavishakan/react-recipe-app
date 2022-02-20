@@ -1,0 +1,52 @@
+.create {
+  color: #555;
+  max-width: 480px;
+  margin: 60px auto;
+}
+
+.create label {
+  font-size: 1.4rem;
+  margin-bottom: 0.4rem;
+  color: #2c2c2c;
+}
+
+.create input:focus,
+.create textarea:focus {
+  border: 1px solid rgb(51, 48, 48);
+  outline: none;
+}
+
+.create input,
+.create textarea {
+  margin: 0.8rem 0;
+}
+
+.create p {
+  margin-top: 10px;
+  font-size: 0.8em;
+}
+.create button {
+  display: block;
+  width: 100px;
+  font-size: 1.2rem;
+  color: #fff;
+  padding: 8px 20px;
+  border: 0;
+  border-radius: 4px;
+  background-color: #7227d3;
+  cursor: pointer;
+  text-decoration: none;
+  margin: 20px auto;
+}
+
+.ingredients {
+  display: flex;
+  align-items: center;
+}
+.ingredients button {
+  margin-left: 10px;
+}
+
+.display-ingredients {
+  margin-bottom: 1rem;
+}
