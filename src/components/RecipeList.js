@@ -2,9 +2,12 @@ import React from "react";
 
 import { Link } from "react-router-dom";
 import { useTheme } from "./../hooks/useTheme";
-
+// firestore
+import { db } from "../firebase/config";
 // styles
 import "./RecipeList.css";
+// icon
+import deleteIcon from "../assets/delete.svg";
 
 const RecipeList = ({ recipes }) => {
   const { mode } = useTheme();
@@ -15,6 +18,11 @@ const RecipeList = ({ recipes }) => {
       </div>
     );
   }
+
+  const handleDelete = (id) => {
+    db.collection("recipes").doc(id).delete();
+  };
+
   return (
     <div className="recipe-list">
       {recipes.map((recipe) => (
@@ -23,6 +31,12 @@ const RecipeList = ({ recipes }) => {
           <p>Cooking Time - {recipe.cookingTime}</p>
           <p>{recipe.method.substring(0, 100)}...</p>
           <Link to={`/recipe/${recipe.id}`}>Cook This</Link>
+          <img
+            src={deleteIcon}
+            alt="delete card"
+            className="delete"
+            onClick={() => handleDelete(recipe.id)}
+          />
         </div>
       ))}
     </div>

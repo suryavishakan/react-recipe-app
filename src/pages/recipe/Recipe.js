@@ -1,17 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useFetch } from "../../hooks/useFetch";
 import { useTheme } from "../../hooks/useTheme";
+import { db } from "../../firebase/config";
 import "./Recipe.css";
 
 const Recipe = () => {
   const { id } = useParams();
-
-  const { data: recipe, error } = useFetch(
-    `http://localhost:3000/recipes/${id}`
-  );
-
   const { mode } = useTheme();
+
+  const [recipe, setRecipe] = useState(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const unSub = db
+      .collection("recipes")
+      .doc(id)
+      .onSnapshot((doc) => {
+        if (doc.exists) {
+          setRecipe(doc.data());
+        } else {
+          setError("Couldn't find the recipe");
+        }
+      });
+    return () => unSub();
+  }, [id]);
+
+  // const handleEdit = () => {
+  //   db.collection("recipes").doc(id).update({
+  //     title: "Banana Smoothie",
+  //   });
+  // };
 
   return (
     <div className={`recipe ${mode}`}>
@@ -31,6 +49,7 @@ const Recipe = () => {
             ))}
           </ul>
           <p className="method">{recipe.method}</p>
+          {/* <button onClick={handleEdit}>Update me</button> */}
         </>
       )}
     </div>
