@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { db } from "../../firebase/config";
 // styles
 import "./Create.css";
@@ -11,7 +11,7 @@ const Create = () => {
   const [method, setMethod] = useState("");
   const [cookingTime, setCookingTime] = useState("");
   const ingredientInput = useRef(null);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,7 +23,7 @@ const Create = () => {
     };
     try {
       await db.collection("recipes").add(doc);
-      history.push("/");
+      navigate("/");
     } catch (err) {
       console.log(err.message);
     }

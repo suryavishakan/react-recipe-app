@@ -1,14 +1,14 @@
 import React from "react";
 import "./SearchBar.css";
 import { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const SearchBar = () => {
   const [term, setTerm] = useState("");
-  const history = useHistory();
+  const navigate = useNavigate();
   const handleSearch = (e) => {
     e.preventDefault();
-    history.push(`/search?q=${term}`);
+    navigate(`/search?q=${term}`);
   };
   return (
     <div className="searchbar">
